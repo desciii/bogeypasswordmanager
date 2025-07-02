@@ -4,13 +4,16 @@
 
 package com.descii.bpm;
 
+import javax.swing.SwingUtilities;
+
 /**
  *
- * @author Marlou
  */
 public class BPM {
 
-    public static void main(String[] args) {
-        System.out.println("Hello World!");
-    }
+        public static void main(String[] args) {
+            SwingUtilities.invokeLater(() -> {
+                new MainFrame().setVisible(true);
+            });
+        }
 }
