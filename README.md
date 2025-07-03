@@ -1,28 +1,77 @@
 # Bogey Password Manager (BPM)
 
-A Side Project named bogeypasswordmanager
-
-Bogey Password Manager (BPM) is a simple password manager built in Java using Netbeans and Maven.
-
----
-
-## Upcoming Features
-
--  Save passwords with custom labels (like "Gmail", "Facebook")
--  View all saved entries in one list
--  Delete entries by label
--  CLI-based, lightweight, and beginner-friendly
+Bogey Password Manager (BPM) is a simple password manager built in Java using NetBeans and Maven.  
+It uses Swing for the GUI and MySQL for storing encrypted credentials.
 
 ---
 
-##  How to Run
+## Current Features
 
-### Prerequisites:
+- User login and registration
+- Add passwords with website/app name, username/email, and password
+- View all saved entries in a table
+- Toggle password visibility (masked or decrypted)
+- Encrypted password storage
+- Auto-refresh after adding new entries
+- Clears input fields after submission
+
+---
+
+## Tech Stack
+
+- Java (Swing)
+- MySQL
+- JDBC
+- Maven
+- Custom EncryptionHelper
+
+---
+
+## How to Run
+
+### Prerequisites
+
 - Java 21+
 - Maven installed
+- MySQL server
 
-### Build the project:
+### Steps
 
-```bash
-mvn clean install
+1. Clone the project  
+   `git clone https://github.com/desciii/bogeypasswordmanager.git`
 
+2. Set up the database  
+   Create a MySQL database and use the schema below.
+
+3. Configure DB connection  
+   Edit `DBConnection.java` with your MySQL credentials.
+
+4. Build the project  
+   `mvn clean install`
+
+5. Run the app  
+   Launch `BPM.java` inside your IDE.
+
+---
+
+## Database Schema
+
+```sql
+CREATE TABLE users (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(255),
+    password VARCHAR(255)
+);
+
+CREATE TABLE passwords (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
+    website VARCHAR(255),
+    username VARCHAR(255),
+    password TEXT,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+---
+
+###Made by: @desciii
