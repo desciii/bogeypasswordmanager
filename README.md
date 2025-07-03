@@ -14,6 +14,7 @@ It uses Swing for the GUI and MySQL for storing encrypted credentials.
 - Encrypted password storage
 - Auto-refresh after adding new entries
 - Clears input fields after submission
+- Edit and Delete Passwords
 
 ---
 
