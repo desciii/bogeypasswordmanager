@@ -16,10 +16,10 @@ public class MainFrame extends JFrame {
     }
 
     public void showPanel(JPanel panel) {
-        setContentPane(panel);               // set the new panel
-        revalidate();                        // update layout
-        repaint();                           // redraw UI
-        pack();                              // resize window to fit
-        setLocationRelativeTo(null);         // center on screen
+        setContentPane(panel);               
+        revalidate();                        
+        repaint();                           
+        pack();                              
+        setLocationRelativeTo(null);         
     }
 }
