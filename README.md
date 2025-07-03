@@ -54,24 +54,4 @@ It uses Swing for the GUI and MySQL for storing encrypted credentials.
 
 ---
 
-## Database Schema
-
-```sql
-CREATE TABLE users (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    username VARCHAR(255),
-    password VARCHAR(255)
-);
-
-CREATE TABLE passwords (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    user_id INT,
-    website VARCHAR(255),
-    username VARCHAR(255),
-    password TEXT,
-    FOREIGN KEY (user_id) REFERENCES users(id)
-);
-
----
-
-###Made by: @desciii
+### Made by: @desciii
