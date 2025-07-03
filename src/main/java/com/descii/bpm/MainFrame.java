@@ -8,6 +8,7 @@ public class MainFrame extends JFrame {
         setTitle("Bogey Password Manager");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        setResizable(false);
         // Show the first screen
         showPanel(new LoginPanel(this));
 

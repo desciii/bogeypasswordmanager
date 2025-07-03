@@ -9,7 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import org.mindrot.jbcrypt.BCrypt;
+import com.descii.bpm.RegisterPanel;
 
 
 /**
@@ -28,8 +28,8 @@ public LoginPanel(MainFrame frame) {
 
 public class AuthManager {
 
-    public static boolean authenticate(String username, String password) {
-        String sql = "SELECT password FROM users WHERE username = ?";
+    public static int authenticate(String username, String password) {
+        String sql = "SELECT id, password FROM users WHERE username = ?";
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -38,15 +38,17 @@ public class AuthManager {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                String hashed = rs.getString("password");
-                return BCrypt.checkpw(password, hashed);
+                String hashedPassword = rs.getString("password");
+                if (org.mindrot.jbcrypt.BCrypt.checkpw(password, hashedPassword)) {
+                    return rs.getInt("id"); // ✅ return user_id
+                }
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return false;
+        return -1; // ❌ failed login
     }
 }
         
@@ -200,8 +202,10 @@ public class AuthManager {
     String user = username.getText();
     String pass = new String(password.getPassword());
 
-    if (AuthManager.authenticate(user, pass)) {
-        mainFrame.showPanel(new Dashboard()); // ✅ correct usage
+    int userId = AuthManager.authenticate(user, pass);
+
+    if (userId != -1) {
+        mainFrame.showPanel(new Dashboard(user, userId)); // ✅ pass both
     } else {
         JOptionPane.showMessageDialog(this, "Invalid credentials");
     }
