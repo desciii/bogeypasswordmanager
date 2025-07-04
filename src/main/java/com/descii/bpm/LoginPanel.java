@@ -40,7 +40,7 @@ public class AuthManager {
             if (rs.next()) {
                 String hashedPassword = rs.getString("password");
                 if (org.mindrot.jbcrypt.BCrypt.checkpw(password, hashedPassword)) {
-                    return rs.getInt("id"); // ✅ return user_id
+                    return rs.getInt("id"); 
                 }
             }
 
@@ -70,7 +70,7 @@ public class AuthManager {
         LoginButton = new javax.swing.JButton();
         RegisterButton = new javax.swing.JButton();
 
-        setBackground(new java.awt.Color(0, 51, 51));
+        setBackground(new java.awt.Color(0, 0, 0));
         setForeground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(400, 400));
 

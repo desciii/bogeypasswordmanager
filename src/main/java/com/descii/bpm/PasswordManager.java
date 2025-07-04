@@ -14,7 +14,7 @@ public class PasswordManager {
             stmt.setInt(1, userId);
             stmt.setString(2, website);
             stmt.setString(3, login);
-            stmt.setString(4, EncryptionHelper.encrypt(password)); // 🔐 encrypt here
+            stmt.setString(4, EncryptionHelper.encrypt(password)); 
 
             int rowsInserted = stmt.executeUpdate();
             stmt.close();

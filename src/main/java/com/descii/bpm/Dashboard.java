@@ -4,10 +4,23 @@
  */
 package com.descii.bpm;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.Toolkit;
+import java.awt.datatransfer.StringSelection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.RowFilter;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -23,8 +36,8 @@ public class Dashboard extends javax.swing.JPanel {
         this.userId = userId;
         initComponents();
         
-        jScrollPane1.getViewport().setBackground(new java.awt.Color(0, 0, 0));
-        jScrollPane1.setBackground(new java.awt.Color(0, 0, 0));
+        jScrollPane1.getViewport().setBackground(new java.awt.Color(51, 51, 51));
+        jScrollPane1.setBackground(new java.awt.Color(51, 51, 51));
         
         togglePasswordButton = new javax.swing.JToggleButton("Show Passwords");
         togglePasswordButton.addActionListener(evt -> loadPasswords());
@@ -71,6 +84,67 @@ public class Dashboard extends javax.swing.JPanel {
     }
 
 
+    class ButtonRenderer extends JButton implements TableCellRenderer {
+        public ButtonRenderer() {
+            setOpaque(true);
+            setText("Copy");
+            setFont(new Font("Arial", Font.PLAIN, 14));
+            setBackground(new Color(51, 51, 51));
+            setForeground(Color.WHITE);
+            setBorderPainted(false);
+        }
+
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value,
+            boolean isSelected, boolean hasFocus, int row, int column) {
+            return this;
+        }
+    }
+
+    class ButtonEditor extends DefaultCellEditor {
+        protected JButton button;
+        private String password;
+        private boolean isPushed;
+
+        public ButtonEditor(JCheckBox checkBox) {
+            super(checkBox);
+            button = new JButton("Copy");
+            button.setOpaque(true);
+            button.setFont(new Font("Arial", Font.PLAIN, 14));
+            button.setBackground(new Color(51, 51, 51));
+            button.setForeground(Color.WHITE);
+            button.setBorderPainted(false);
+
+            button.addActionListener(e -> {
+                if (isPushed) {
+                    StringSelection stringSelection = new StringSelection(password);
+                    Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
+                    JOptionPane.showMessageDialog(button, "Password copied to clipboard!");
+                }
+                isPushed = false;
+            });
+        }
+
+        @Override
+        public Component getTableCellEditorComponent(JTable table, Object value,
+            boolean isSelected, int row, int column) {
+            password = (value != null) ? value.toString() : "";
+            isPushed = true;
+            return button;
+        }
+
+        @Override
+        public Object getCellEditorValue() {
+            return password;
+        }
+
+        @Override
+        public boolean stopCellEditing() {
+            isPushed = false;
+            return super.stopCellEditing();
+        }
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -99,8 +173,10 @@ public class Dashboard extends javax.swing.JPanel {
         jTextField5 = new javax.swing.JTextField();
         jButton5 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jTextField1 = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
 
-        setBackground(new java.awt.Color(51, 51, 51));
+        setBackground(new java.awt.Color(0, 0, 0));
         setToolTipText("");
 
         contents.setBackground(new java.awt.Color(51, 51, 51));
@@ -108,14 +184,18 @@ public class Dashboard extends javax.swing.JPanel {
         contents.setForeground(new java.awt.Color(255, 255, 255));
         contents.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Username / Email", "Password", "Website"
+                "ID", "Website", "Username / Email", "Password"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -130,6 +210,7 @@ public class Dashboard extends javax.swing.JPanel {
             contents.getColumnModel().getColumn(0).setResizable(false);
             contents.getColumnModel().getColumn(1).setResizable(false);
             contents.getColumnModel().getColumn(2).setResizable(false);
+            contents.getColumnModel().getColumn(3).setResizable(false);
         }
 
         logintitle.setBackground(new java.awt.Color(0, 51, 51));
@@ -224,7 +305,7 @@ public class Dashboard extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jToggleButton1.setBackground(new java.awt.Color(0, 0, 0));
+        jToggleButton1.setBackground(new java.awt.Color(0, 51, 51));
         jToggleButton1.setForeground(new java.awt.Color(255, 255, 255));
         jToggleButton1.setText("See Passwords");
         jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -344,6 +425,23 @@ public class Dashboard extends javax.swing.JPanel {
             }
         });
 
+        jTextField1.setBackground(new java.awt.Color(0, 51, 51));
+        jTextField1.setForeground(new java.awt.Color(255, 255, 255));
+        jTextField1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jTextField1MouseReleased(evt);
+            }
+        });
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField1KeyReleased(evt);
+            }
+        });
+
+        jLabel3.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("Search");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -353,23 +451,35 @@ public class Dashboard extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jToggleButton1)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jScrollPane1)
+                                .addComponent(jTextField1))
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(addpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(47, 47, 47)
                                 .addComponent(addpanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jButton3)))
-                    .addComponent(logintitle, javax.swing.GroupLayout.PREFERRED_SIZE, 448, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jButton3)
+                            .addComponent(logintitle, javax.swing.GroupLayout.PREFERRED_SIZE, 448, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(88, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(logintitle, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(logintitle, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(8, 8, 8)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -380,24 +490,22 @@ public class Dashboard extends javax.swing.JPanel {
                     .addComponent(jScrollPane1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jToggleButton1)
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addGap(12, 12, 12))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void loadPasswords() {
         try {
-            // Define the new model with ID as hidden column
-            javax.swing.table.DefaultTableModel model = new javax.swing.table.DefaultTableModel(
+            DefaultTableModel model = new DefaultTableModel(
                 new Object[][] {},
-                new String[] { "ID", "Username / Email", "Password", "Website" }
+                new String[] { "ID", "Website", "Username / Email", "Password", "Copy" }
             ) {
-                boolean[] canEdit = new boolean[] { false, false, false, false };
+                boolean[] canEdit = new boolean[] { false, false, false, false, true };
                 public boolean isCellEditable(int rowIndex, int columnIndex) {
                     return canEdit[columnIndex];
                 }
             };
 
-            // Set the new model to the table
             contents.setModel(model);
 
             // Hide the ID column
@@ -407,7 +515,7 @@ public class Dashboard extends javax.swing.JPanel {
             contents.getColumnModel().getColumn(0).setPreferredWidth(0);
 
             Connection conn = DBConnection.getConnection();
-            String sql = "SELECT id, username, password, website FROM passwords WHERE user_id = ?";
+            String sql = "SELECT id, website, username, password FROM passwords WHERE user_id = ?";
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setInt(1, userId);
             ResultSet rs = stmt.executeQuery();
@@ -416,17 +524,22 @@ public class Dashboard extends javax.swing.JPanel {
 
             while (rs.next()) {
                 int id = rs.getInt("id");
+                String website = rs.getString("website");
                 String userOrEmail = rs.getString("username");
                 String encryptedPass = rs.getString("password");
-                String website = rs.getString("website");
 
                 String displayedPass = show ? EncryptionHelper.decrypt(encryptedPass) : "••••••••";
+                String actualPass = EncryptionHelper.decrypt(encryptedPass);
 
-                model.addRow(new Object[]{id, userOrEmail, displayedPass, website});
+                model.addRow(new Object[]{id, userOrEmail, displayedPass, website, actualPass});
             }
 
             stmt.close();
             conn.close();
+
+            // Set button renderer/editor
+            contents.getColumn("Copy").setCellRenderer(new ButtonRenderer());
+            contents.getColumn("Copy").setCellEditor(new ButtonEditor(new javax.swing.JCheckBox()));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -434,8 +547,6 @@ public class Dashboard extends javax.swing.JPanel {
     }
 
 
-
-    
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String website = jTextField2.getText().trim();
         String login = jTextField3.getText().trim();
@@ -562,6 +673,18 @@ public class Dashboard extends javax.swing.JPanel {
                 jPasswordField2.setText("");
     }//GEN-LAST:event_jButton5ActionPerformed
 
+    private void jTextField1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField1MouseReleased
+
+    }//GEN-LAST:event_jTextField1MouseReleased
+
+    private void jTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyReleased
+        DefaultTableModel ob=(DefaultTableModel) contents.getModel();
+        TableRowSorter<DefaultTableModel> obj=new TableRowSorter<>(ob);
+        contents.setRowSorter(obj);
+        obj.setRowFilter(RowFilter.regexFilter(jTextField1.getText()));
+    }//GEN-LAST:event_jTextField1KeyReleased
+
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel addpanel;
@@ -579,9 +702,11 @@ public class Dashboard extends javax.swing.JPanel {
     private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JPasswordField jPasswordField2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;

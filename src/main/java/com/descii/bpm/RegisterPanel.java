@@ -57,7 +57,7 @@ public class RegisterPanel extends javax.swing.JPanel {
         RegisterButton = new javax.swing.JButton();
         logintitle = new javax.swing.JLabel();
 
-        setBackground(new java.awt.Color(0, 51, 51));
+        setBackground(new java.awt.Color(0, 0, 0));
 
         Container.setBackground(new java.awt.Color(51, 51, 51));
         Container.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 1, true));
@@ -106,10 +106,9 @@ public class RegisterPanel extends javax.swing.JPanel {
             .addGroup(ContainerLayout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addGroup(ContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(ContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(passwordlabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(usernamelabel)
-                        .addComponent(RegisterButton))
+                    .addComponent(passwordlabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(usernamelabel)
+                    .addComponent(RegisterButton)
                     .addComponent(username, javax.swing.GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE)
                     .addComponent(password))
                 .addContainerGap(24, Short.MAX_VALUE))
