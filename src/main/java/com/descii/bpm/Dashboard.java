@@ -121,12 +121,12 @@ public class Dashboard extends javax.swing.JPanel {
             int row = contents.getSelectedRow();
 
             // Set values to Edit fields
-            jTextField4.setText((String) contents.getValueAt(row, 3)); // Website
-            jTextField5.setText((String) contents.getValueAt(row, 1)); // Username/Email
+            jTextField4.setText((String) contents.getValueAt(row, 1)); // Website
+            jTextField5.setText((String) contents.getValueAt(row, 2)); // Username/Email
 
             if (jToggleButton1.isSelected()) {
                 // Show decrypted password
-                jPasswordField2.setText((String) contents.getValueAt(row, 2));
+                jPasswordField2.setText((String) contents.getValueAt(row, 3));
             } else {
                 // Fetch encrypted password from DB to decrypt
                 int id = (int) contents.getValueAt(row, 0);
@@ -470,6 +470,11 @@ public class Dashboard extends javax.swing.JPanel {
         jTextField4.setBackground(new java.awt.Color(0, 51, 51));
         jTextField4.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         jTextField4.setForeground(new java.awt.Color(255, 255, 255));
+        jTextField4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField4ActionPerformed(evt);
+            }
+        });
 
         editwebsite.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         editwebsite.setForeground(new java.awt.Color(255, 255, 255));
@@ -495,7 +500,7 @@ public class Dashboard extends javax.swing.JPanel {
 
         editusername.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         editusername.setForeground(new java.awt.Color(255, 255, 255));
-        editusername.setText("EditUsername/ Email");
+        editusername.setText("Edit Username/ Email");
 
         jTextField5.setBackground(new java.awt.Color(0, 51, 51));
         jTextField5.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
@@ -622,7 +627,6 @@ public class Dashboard extends javax.swing.JPanel {
                         .addComponent(logintitle, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 47, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -839,6 +843,10 @@ public class Dashboard extends javax.swing.JPanel {
         contents.setRowSorter(obj);
         obj.setRowFilter(RowFilter.regexFilter(jTextField1.getText()));
     }//GEN-LAST:event_jTextField1KeyReleased
+
+    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField4ActionPerformed
 
     private MainFrame mainFrame;
     private javax.swing.JLabel passwordStrengthLabel;
