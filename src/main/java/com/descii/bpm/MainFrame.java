@@ -22,4 +22,14 @@ public class MainFrame extends JFrame {
         pack();                              
         setLocationRelativeTo(null);         
     }
+    
+    public void showLoginPanel() {
+        setContentPane(new LoginPanel(this)); // or whatever your login panel is
+        revalidate();
+        repaint();
+        pack();
+        setLocationRelativeTo(null);   
+    }
 }
+
+

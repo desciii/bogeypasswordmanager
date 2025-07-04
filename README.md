@@ -1,4 +1,10 @@
-# Bogey Password Manager (BPM)
+# BPM
+
+A Side Project named Bogey's Password Manager - Considered Finished
+
+---
+
+# Bogey's Password Manager
 
 Bogey Password Manager (BPM) is a simple password manager built in Java using NetBeans and Maven.  
 It uses Swing for the GUI and MySQL for storing encrypted credentials.

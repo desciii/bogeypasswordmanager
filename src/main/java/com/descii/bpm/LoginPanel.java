@@ -205,7 +205,7 @@ public class AuthManager {
     int userId = AuthManager.authenticate(user, pass);
 
     if (userId != -1) {
-        mainFrame.showPanel(new Dashboard(user, userId)); // ✅ pass both
+        mainFrame.showPanel(new Dashboard(mainFrame, user, userId));
     } else {
         JOptionPane.showMessageDialog(this, "Invalid credentials");
     }

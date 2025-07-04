@@ -35,9 +35,21 @@ public class Dashboard extends javax.swing.JPanel {
     private int userId;
     private javax.swing.JToggleButton togglePasswordButton;
 
-    public Dashboard(String username, int userId) {
+    public Dashboard(MainFrame mainFrame, String username, int userId) {
+        this.mainFrame = mainFrame;
         this.userId = userId;
         initComponents();
+        
+        JButton logoutButton = new JButton("Logout");
+        logoutButton.setFont(new Font("Arial", Font.BOLD, 14));
+        logoutButton.setBackground(new Color(51, 51, 51));
+        logoutButton.setForeground(Color.WHITE);
+        logoutButton.setBounds(10, 10, 100, 30); // adjust position as needed
+        add(logoutButton);
+        logoutButton.addActionListener(e -> {
+            // go back to login form
+            mainFrame.showLoginPanel();
+        });
         
         jScrollPane1.getViewport().setBackground(new java.awt.Color(51, 51, 51));
         jScrollPane1.setBackground(new java.awt.Color(51, 51, 51));
@@ -828,7 +840,7 @@ public class Dashboard extends javax.swing.JPanel {
         obj.setRowFilter(RowFilter.regexFilter(jTextField1.getText()));
     }//GEN-LAST:event_jTextField1KeyReleased
 
-    
+    private MainFrame mainFrame;
     private javax.swing.JLabel passwordStrengthLabel;
     private javax.swing.JProgressBar passwordStrengthBar;
     private javax.swing.JLabel editPasswordStrengthLabel;
