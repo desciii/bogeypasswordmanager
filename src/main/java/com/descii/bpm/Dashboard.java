@@ -4,6 +4,9 @@
  */
 package com.descii.bpm;
 
+import com.descii.bpm.DBConnection;
+import com.descii.bpm.EncryptionHelper;
+import com.descii.bpm.PasswordManager;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
@@ -49,6 +52,58 @@ public class Dashboard extends javax.swing.JPanel {
         logintitle.setBounds(20, 20, 300, 30); 
         loadPasswords(); 
         
+        // Create password strength components
+        passwordStrengthLabel = new javax.swing.JLabel();
+        passwordStrengthLabel.setFont(new java.awt.Font("Arial", 0, 14));
+        passwordStrengthLabel.setForeground(new java.awt.Color(255, 255, 255));
+        passwordStrengthLabel.setText("Password Strength: ");
+
+        passwordStrengthBar = new javax.swing.JProgressBar();
+        passwordStrengthBar.setStringPainted(true);
+        passwordStrengthBar.setForeground(Color.RED);
+        passwordStrengthBar.setBackground(new java.awt.Color(60, 60, 60));
+
+        // Add components to the add panel
+        addpanel.add(passwordStrengthLabel);
+        addpanel.add(passwordStrengthBar);
+
+        // Position the components (adjust coordinates as needed)
+        passwordStrengthLabel.setBounds(38, 355, 180, 20);
+        passwordStrengthBar.setBounds(38, 375, 219, 20);
+
+        // Add listener to edit password field
+        jPasswordField2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                checkEditPasswordStrength(new String(jPasswordField2.getPassword()));
+            }
+        });
+        
+        // Create password strength components for edit panel
+        editPasswordStrengthLabel = new javax.swing.JLabel();
+        editPasswordStrengthLabel.setFont(new java.awt.Font("Arial", 0, 14));
+        editPasswordStrengthLabel.setForeground(new java.awt.Color(255, 255, 255));
+        editPasswordStrengthLabel.setText("Password Strength: ");
+
+        editPasswordStrengthBar = new javax.swing.JProgressBar();
+        editPasswordStrengthBar.setStringPainted(true);
+        editPasswordStrengthBar.setForeground(Color.RED);
+        editPasswordStrengthBar.setBackground(new java.awt.Color(60, 60, 60));
+
+        // Add components to the edit panel
+        addpanel1.add(editPasswordStrengthLabel);
+        addpanel1.add(editPasswordStrengthBar);
+
+        // Position the components (adjust coordinates as needed)
+        editPasswordStrengthLabel.setBounds(38, 355, 180, 20);
+        editPasswordStrengthBar.setBounds(38, 375, 219, 20);
+
+        // Add listener to edit password field
+        jPasswordField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                checkAddPasswordStrength(new String(jPasswordField1.getPassword()));
+            }
+        });
+        
         contents.getSelectionModel().addListSelectionListener(e -> {
         if (!e.getValueIsAdjusting() && contents.getSelectedRow() != -1) {
             int row = contents.getSelectedRow();
@@ -83,6 +138,86 @@ public class Dashboard extends javax.swing.JPanel {
     });
     }
 
+
+    private void checkAddPasswordStrength(String password) {
+        if (password.isEmpty()) {
+            passwordStrengthLabel.setText("Password Strength: ");
+            passwordStrengthBar.setValue(0);
+            passwordStrengthBar.setForeground(Color.RED);
+            return;
+        }
+
+        int score = 0;
+        String strengthText = "";
+        Color strengthColor = Color.RED;
+
+        // Length check
+        if (password.length() >= 8) score++;
+        if (password.length() >= 12) score++;
+
+        // Character variety checks
+        if (password.matches(".*[a-z].*")) score++; // lowercase
+        if (password.matches(".*[A-Z].*")) score++; // uppercase
+        if (password.matches(".*[0-9].*")) score++; // numbers
+        if (password.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?].*")) score++; // special chars
+
+        // Determine strength
+        if (score <= 2) {
+            strengthText = "Weak";
+            strengthColor = Color.RED;
+        } else if (score <= 4) {
+            strengthText = "Medium";
+            strengthColor = Color.ORANGE;
+        } else {
+            strengthText = "Strong";
+            strengthColor = Color.GREEN;
+        }
+
+        // Update only ADD panel
+        passwordStrengthLabel.setText("Password Strength: " + strengthText);
+        passwordStrengthBar.setValue((score * 100) / 6);
+        passwordStrengthBar.setForeground(strengthColor);
+    }
+
+    private void checkEditPasswordStrength(String password) {
+        if (password.isEmpty()) {
+            editPasswordStrengthLabel.setText("Password Strength: ");
+            editPasswordStrengthBar.setValue(0);
+            editPasswordStrengthBar.setForeground(Color.RED);
+            return;
+        }
+
+        int score = 0;
+        String strengthText = "";
+        Color strengthColor = Color.RED;
+
+        // Length check
+        if (password.length() >= 8) score++;
+        if (password.length() >= 12) score++;
+
+        // Character variety checks
+        if (password.matches(".*[a-z].*")) score++; // lowercase
+        if (password.matches(".*[A-Z].*")) score++; // uppercase
+        if (password.matches(".*[0-9].*")) score++; // numbers
+        if (password.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?].*")) score++; // special chars
+
+        // Determine strength
+        if (score <= 2) {
+            strengthText = "Weak";
+            strengthColor = Color.RED;
+        } else if (score <= 4) {
+            strengthText = "Medium";
+            strengthColor = Color.ORANGE;
+        } else {
+            strengthText = "Strong";
+            strengthColor = Color.GREEN;
+        }
+
+        // Update only EDIT panel
+        editPasswordStrengthLabel.setText("Password Strength: " + strengthText);
+        editPasswordStrengthBar.setValue((score * 100) / 6);
+        editPasswordStrengthBar.setForeground(strengthColor);
+    }
 
     class ButtonRenderer extends JButton implements TableCellRenderer {
         public ButtonRenderer() {
@@ -412,7 +547,7 @@ public class Dashboard extends javax.swing.JPanel {
                 .addGroup(addpanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(28, 28, 28))
+                .addContainerGap(78, Short.MAX_VALUE))
         );
 
         jButton3.setBackground(new java.awt.Color(102, 51, 0));
@@ -473,21 +608,21 @@ public class Dashboard extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(logintitle, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 47, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(8, 8, 8)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 486, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(addpanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(addpanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(74, 74, 74)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1))
+                            .addComponent(addpanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(addpanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jToggleButton1)
                 .addGap(12, 12, 12))
@@ -531,7 +666,7 @@ public class Dashboard extends javax.swing.JPanel {
                 String displayedPass = show ? EncryptionHelper.decrypt(encryptedPass) : "••••••••";
                 String actualPass = EncryptionHelper.decrypt(encryptedPass);
 
-                model.addRow(new Object[]{id, userOrEmail, displayedPass, website, actualPass});
+                model.addRow(new Object[]{id, website, userOrEmail, displayedPass, actualPass});
             }
 
             stmt.close();
@@ -565,6 +700,9 @@ public class Dashboard extends javax.swing.JPanel {
             jTextField2.setText("");
             jTextField3.setText("");
             jPasswordField1.setText("");
+            passwordStrengthLabel.setText("Password Strength: ");
+            passwordStrengthBar.setValue(0);
+            passwordStrengthBar.setForeground(Color.RED);
         } else {
             JOptionPane.showMessageDialog(this, "Failed to add password.");
         }
@@ -615,6 +753,9 @@ public class Dashboard extends javax.swing.JPanel {
             jTextField4.setText("");
             jTextField5.setText("");
             jPasswordField2.setText("");
+            editPasswordStrengthLabel.setText("Password Strength: ");
+            editPasswordStrengthBar.setValue(0);
+            editPasswordStrengthBar.setForeground(Color.RED);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -671,6 +812,9 @@ public class Dashboard extends javax.swing.JPanel {
                 jTextField4.setText("");
                 jTextField5.setText("");
                 jPasswordField2.setText("");
+                editPasswordStrengthLabel.setText("Password Strength: ");
+                editPasswordStrengthBar.setValue(0);
+                editPasswordStrengthBar.setForeground(Color.RED);
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jTextField1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField1MouseReleased
@@ -685,7 +829,10 @@ public class Dashboard extends javax.swing.JPanel {
     }//GEN-LAST:event_jTextField1KeyReleased
 
     
-
+    private javax.swing.JLabel passwordStrengthLabel;
+    private javax.swing.JProgressBar passwordStrengthBar;
+    private javax.swing.JLabel editPasswordStrengthLabel;
+    private javax.swing.JProgressBar editPasswordStrengthBar;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel addpanel;
     private javax.swing.JPanel addpanel1;
