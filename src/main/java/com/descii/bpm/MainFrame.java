@@ -8,7 +8,6 @@ public class MainFrame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
         
-        // Set the custom icon (PNG version)
         try {
             ImageIcon icon = new ImageIcon("src/main/java/com/descii/bpm/logo.png");
             setIconImage(icon.getImage());
@@ -16,7 +15,6 @@ public class MainFrame extends JFrame {
             System.out.println("Could not load icon: " + e.getMessage());
         }
         
-        // Show the first screen
         showPanel(new LoginPanel(this));
         setVisible(true);
     }
