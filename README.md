@@ -62,6 +62,8 @@ It uses Swing for the GUI and MySQL for storing encrypted credentials.
 5. Run the app  
    Launch `BPM.java` inside your IDE.
 
----
+## Credits
 
-### Made by: @desciii
+Developed by **@desciii**
+
+---
